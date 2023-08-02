@@ -6,16 +6,20 @@ const Expertise = db.Expertise;
 
 async function createUser(req, res) {
   try {
+
     if (req.user.role !== 'ADMIN') {
       return res.status(403).json({ message: 'Você não tem permissão para criar usuários.' });
     }
 
-    const { user } = req.body;
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-    user.password = hashedPassword;
+    const { name, cpf, email, password, contact, birthdate, hireDate, roleId, is_active, photo, document, sex, expertiseId } = req.body;
 
-    const newUser = await User.create(user);
-    res.status(201).json(newUser);
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await User.create({ name, cpf, email, password: hashedPassword, contact, birthdate, hireDate, roleId, is_active, photo, document, sex, expertiseId });
+
+
+
+    res.status(201).json(user.email);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
