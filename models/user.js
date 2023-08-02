@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       contact: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -58,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: true,
       },
-      photo: {  
+      photo: {
         type: DataTypes.STRING,
         allowNull: true,
       },

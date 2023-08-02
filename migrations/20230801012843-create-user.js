@@ -23,6 +23,10 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       contact: {
         type: Sequelize.STRING,
         allowNull: false,

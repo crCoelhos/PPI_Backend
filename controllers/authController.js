@@ -82,11 +82,11 @@ async function login(req, res) {
           { cpf: login }
         ]
       },
-      include: [{
-        model: Role,
-        as: 'role',
-        attributes: ['name'] // Adicione os atributos que deseja retornar do Role
-      }]
+      // include: [{
+      //   model: Role,
+      //   as: 'role',
+      //   attributes: ['name'] // Adicione os atributos que deseja retornar do Role
+      // }]
     });
     if (!user) {
       return res.status(400).json({ error: 'Usuário ou senha inválida' });
@@ -98,20 +98,20 @@ async function login(req, res) {
     }
 
     // Extrair o nome e o Role do usuário
-    const { name, role, email } = user;
+    const { name } = user;
 
     // Crie e retorne um token de acesso
     const token = jwt.sign({ id: user.id }, config.secret, { expiresIn: '6h' });
-    res.json({ name, email, role: role.name, token });
+    res.json({ name, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Erro ao fazer login' });
   }
 }
 
-async function passwordReset(req, res) {
+// async function passwordReset(req, res) {
 
-}
+// }
 
 module.exports = {
   login,
