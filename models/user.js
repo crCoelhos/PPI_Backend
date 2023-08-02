@@ -9,10 +9,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'roleId',
       });
 
-      this.belongsToMany(models.Expertise, {
-        through: 'UserExpertises',
+      this.hasMany(models.Expertise, {
         as: 'expertises',
-        foreignKey: 'userId',
+        foreignKey: 'expertiseId',
       });
     }
   }

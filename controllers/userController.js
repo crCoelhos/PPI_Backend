@@ -24,27 +24,35 @@ async function createUser(req, res) {
 async function getAllUsers(req, res) {
   try {
     if (req.user.role !== 'ADMIN') {
-      return res.status(403).json({ message: 'Você não tem permissão de busca de usuários.' });
+      let role = req.user.role
+
+      console.log("role: ", role)
+
+
+      return res.status(403).json({ message: 'Você não tem permissão de busca de usuários: ' });
     }
 
     const users = await User.findAll({
+
       include: [
         {
           model: Role,
           as: 'role',
           attributes: ['name']
         },
-        {
-          model: Expertise,
-          as: 'expertises',
-          attributes: ['name'],
-          through: { attributes: [] }
-        }
+        // {
+        //   model: Expertise,
+        //   as: 'expertises',
+        //   attributes: ['name'],
+        //   through: { attributes: [] }
+        // }
       ],
       attributes: {
         exclude: ['password'],
       }
     });
+    // console.log("jorge ", users)
+
     res.status(200).json(users);
   } catch (err) {
     res.status(500).json({ message: err.message });
