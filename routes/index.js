@@ -8,12 +8,14 @@ const userRoute = require('./userRoutes');
 const roleRoute = require('./roleRoutes');
 const userTaskRoutes = require('./userTaskRoutes.js')
 const taskRoutes = require('./taskRoutes.js')
+const customerRoutes = require('./customerRoutes.js')
 
 router.use('/auth', authRoute, accessMiddleware);
 router.use('/admin', userRoute, accessMiddleware);
 router.use('/admin', roleRoute, accessMiddleware);
 router.use('/admin', userTaskRoutes, accessMiddleware);
 router.use('/admin', taskRoutes, accessMiddleware);
+router.use('/admin', customerRoutes, accessMiddleware);
 // router.post('/webhook', Webhook);
 
 module.exports = router;

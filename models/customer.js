@@ -28,10 +28,6 @@ module.exports = (sequelize) => {
         allowNull: false,
         unique: true,
       },
-      inclusionDate: {
-        type: DataTypes.DATEONLY,
-        allowNull: false,
-      },
       isActive: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
