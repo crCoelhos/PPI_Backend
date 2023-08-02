@@ -77,12 +77,12 @@ async function getUserById(req, res) {
           as: 'role',
           attributes: ['name']
         },
-        {
-          model: Expertise,
-          as: 'expertises',
-          attributes: ['name'],
-          through: { attributes: [] }
-        }
+        // {
+        //   model: Expertise,
+        //   as: 'expertises',
+        //   attributes: ['name'],
+        //   through: { attributes: [] }
+        // }
       ],
       attributes: {
         exclude: ['roleId', 'password'],
