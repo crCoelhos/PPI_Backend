@@ -1,7 +1,7 @@
 {
-  "name": "2pi-Backend",
+  "name": "PPI_Backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "repository": "",
   "author": "",
   "license": "MIT",

@@ -32,54 +32,31 @@ async function uploadUserPhoto(req, res) {
   }
 };
 
-// async function uploadEventPhoto(req, res) {
-//   try {
+async function uploadCustomerContract(req, res) {
+  try {
 
-//     const event = await Event.findByPk(req.params.id);
-//     if (!event) {
-//       return res.status(404).json({ message: 'Evento não encontrado' });
-//     }
+    const athletic = await Athletic.findByPk(req.params.id);
+    if (!athletic) {
+      return res.status(404).json({ message: 'Atlética não encontrada' });
+    }
 
-//     upload.single('event')(req, res, (err) => {
+    upload.single('athletic')(req, res, (err) => {
 
-//       if (err) {
-//         return res.status(400).json({ message: err.message });
-//       }
-//       event.bannerEvent = req.file.filename;
-//       event.save();
+      if (err) {
+        return res.status(400).json({ message: err.message });
+      }
+      athletic.img_url = req.file.filename;
+      athletic.save();
 
-//       return res.status(200).json({ message: 'Foto de evento atualizada' });
-//     });
-//   } catch (err) {
-//     res.status(500).json({ message: err.message });
-//   }
-// }
-// async function uploadAthleticPhoto(req, res) {
-//   try {
-
-//     const athletic = await Athletic.findByPk(req.params.id);
-//     if (!athletic) {
-//       return res.status(404).json({ message: 'Atlética não encontrada' });
-//     }
-
-//     upload.single('athletic')(req, res, (err) => {
-
-//       if (err) {
-//         return res.status(400).json({ message: err.message });
-//       }
-//       athletic.img_url = req.file.filename;
-//       athletic.save();
-
-//       return res.status(200).json({ message: 'Foto da atlética atualizada' });
-//     });
-//   } catch (err) {
-//     res.status(500).json({ message: err.message });
-//   }
-// }
+      return res.status(200).json({ message: 'Foto da atlética atualizada' });
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
 
 module.exports = {
   uploadUserPhoto,
-  uploadEventPhoto,
-  uploadAthleticPhoto
+  uploadCustomerContract
 }
 
