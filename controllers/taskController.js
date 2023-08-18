@@ -8,7 +8,12 @@ async function createTask(req, res) {
         res.status(201).json({ task: newTask });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Erro ao criar a tarefa' });
+        if (error.name === 'SequelizeValidationError') {
+            const errorMessages = error.errors.map(err => err.message);
+            res.status(400).json({ errors: errorMessages });
+        } else {
+            res.status(500).json({ error: 'Erro ao criar a tarefa' });
+        }
     }
 }
 

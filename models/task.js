@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'user',
         foreignKey: 'id',
       });
+
       this.hasMany(models.User_Task, {
         as: 'usertask',
         foreignKey: 'id',
@@ -15,7 +16,12 @@ module.exports = (sequelize, DataTypes) => {
 
       this.belongsTo(models.Customer, {
         as: 'customer',
-        foreignKey: 'id',
+        foreignKey: 'customerId',
+      });
+
+      this.belongsTo(models.Expertise, {
+        foreignKey: 'taskDomain', // Nome da coluna que armazena a chave estrangeira
+        as: 'expertise', // Alias para acessar a expertise relacionada
       });
     }
   }
@@ -51,8 +57,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       taskDomain: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: true,
+        references: {
+          model: 'Expertises',
+          key: 'id', 
+        },
       },
       isActive: {
         type: DataTypes.BOOLEAN,

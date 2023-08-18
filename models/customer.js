@@ -34,7 +34,7 @@ module.exports = (sequelize) => {
         defaultValue: true,
       },
       size: {
-        type: DataTypes.ENUM('micro', 'mei', 'medium', 'large'),
+        type: DataTypes.ENUM('1', '2', '3', '4'),
         allowNull: false,
       },
     },

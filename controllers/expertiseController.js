@@ -5,10 +5,15 @@ async function createExpertise(req, res) {
     try {
         const expertiseData = req.body;
         const newExpertise = await Expertise.create(expertiseData);
-        res.status(201).json({ expertise: newExpertise });
+        res.status(201).json({ task: newExpertise });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Erro ao criar a expertise' });
+        if (error.name === 'SequelizeValidationError') {
+            const errorMessages = error.errors.map(err => err.message);
+            res.status(400).json({ errors: errorMessages });
+        } else {
+            res.status(500).json({ error: 'Erro ao criar expertise' });
+        }
     }
 }
 
