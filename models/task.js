@@ -61,8 +61,13 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         references: {
           model: 'Expertises',
-          key: 'id', 
+          key: 'id',
         },
+      },
+      taskStatus: {
+        type: DataTypes.ENUM('TODO', 'WAITING', 'INPROGRESS', 'PAUSED', 'CANCELED', 'COMPLETED', 'OVERDUE'),
+        allowNull: false,
+        defaultValue: 'TODO',
       },
       isActive: {
         type: DataTypes.BOOLEAN,

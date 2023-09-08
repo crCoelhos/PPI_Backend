@@ -46,6 +46,11 @@ module.exports = {
         allowNull: false,
         defaultValue: true,
       },
+      taskStatus: {
+        type: Sequelize.ENUM('TODO', 'WAITING', 'INPROGRESS', 'PAUSED', 'CANCELED', 'COMPLETED', 'OVERDUE'),
+        allowNull: false,
+        defaultValue: 'TODO',
+      },
       customerId: {
         type: Sequelize.INTEGER,
         allowNull: false,
