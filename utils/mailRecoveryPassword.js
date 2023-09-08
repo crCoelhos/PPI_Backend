@@ -39,4 +39,3 @@ const enviarEmailRecuperacaoSenha = (destinatario, nomeUsuario, linkReset) => {
 module.exports = {
    enviarEmailRecuperacaoSenha,
  };
-//enviarEmailRecuperacaoSenha('ppaalo.henriquecosta@gmail.com', 'Paulo Henrique', 'https://exemplo.com/resetar-senha');
