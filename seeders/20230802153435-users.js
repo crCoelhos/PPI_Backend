@@ -12,7 +12,7 @@ module.exports = {
         contact: '1234567890',
         birthdate: new Date('1990-05-15'),
         hireDate: new Date('2022-01-10'),
-        roleId: 1, // Assuming a role with ID 1 exists
+        roleId: 1, 
         is_active: true,
         photo: 'joao.jpg',
         document: 'cpf_joao.pdf',
