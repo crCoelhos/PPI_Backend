@@ -8,7 +8,7 @@ module.exports = {
         taskId: 1, // Assuming a task with ID 1 exists
         assignmentDate: new Date('2023-08-05'),
         is_active: true,
-        status: 'aguardando',
+        status: 'WAITING',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -17,7 +17,7 @@ module.exports = {
         taskId: 2, // Assuming a task with ID 2 exists
         assignmentDate: new Date('2023-08-10'),
         is_active: true,
-        status: 'executando',
+        status: 'TODO',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -26,7 +26,7 @@ module.exports = {
         taskId: 3, // Assuming a task with ID 3 exists
         assignmentDate: new Date('2023-08-15'),
         is_active: true,
-        status: 'finalizado',
+        status: 'COMPLETED',
         createdAt: new Date(),
         updatedAt: new Date(),
       },

@@ -1,7 +1,7 @@
 'use strict';
 const { User_Task } = require('../models');
 
-async function createUserTask(req, res) {
+async function assignTask(req, res) {
     try {
         const userTaskData = req.body;
         const newUserTask = await User_Task.create(userTaskData);
@@ -69,7 +69,7 @@ async function deleteUserTask(req, res) {
 }
 
 module.exports = {
-    createUserTask,
+    assignTask,
     getUserTaskById,
     getAllUserTasks,
     updateUserTask,

@@ -38,7 +38,7 @@ module.exports = {
         defaultValue: true,
       },
       status: {
-        type: Sequelize.ENUM('aguardando', 'executando', 'finalizado', 'cancelado', 'expirado'),
+        type: Sequelize.ENUM('TODO', 'WAITING', 'INPROGRESS', 'PAUSED', 'CANCELED', 'COMPLETED', 'OVERDUE'),
         allowNull: false
       },
       createdAt: {
