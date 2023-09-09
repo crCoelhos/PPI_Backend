@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
 
       this.hasMany(models.User_Task, {
         as: 'usertask',
-        foreignKey: 'id',
+        foreignKey: 'taskId',
       });
 
       this.belongsTo(models.Customer, {
@@ -20,8 +20,8 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       this.belongsTo(models.Expertise, {
-        foreignKey: 'taskDomain', // Nome da coluna que armazena a chave estrangeira
-        as: 'expertise', // Alias para acessar a expertise relacionada
+        foreignKey: 'taskDomain', 
+        as: 'expertise',
       });
     }
   }
