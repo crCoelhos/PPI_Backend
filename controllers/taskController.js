@@ -121,10 +121,130 @@ async function deleteTask(req, res) {
     }
 }
 
+async function getNextDeadlineTasks(req, res) {
+    try {
+        const currentDate = new Date();
+
+        const nextDeadlineTasks = await Task.findAll({
+            where: {
+                taskStatus: {
+                    [Op.notIn]: ['PAUSED', 'CANCELED', 'COMPLETED'],
+                },
+                deadline: {
+                    [Op.gt]: currentDate,
+                },
+            },
+            order: [
+                ['deadline', 'ASC'] // Ordena em ordem crescente de prazo final
+            ],
+        });
+
+        if (nextDeadlineTasks.length === 0) {
+            return res.status(404).json({ error: 'Nenhuma tarefa com prazo futuro encontrada' });
+        }
+
+        res.json(nextDeadlineTasks);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao encontrar as tarefas com prazo final mais próximo' });
+    }
+}
+async function countCompletedTasksLastMonth(req, res) {
+    try {
+
+        const currentDate = new Date();
+        const oneMonthAgo = new Date();
+        oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+
+        const completedTasksCount = await Task.count({
+            where: {
+                taskStatus: 'COMPLETED',
+                updatedAt: {
+                    [Op.between]: [oneMonthAgo, currentDate],
+                },
+            },
+        });
+
+        res.json({ completedTasksCount });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao contar as tarefas completadas no último mês' });
+    }
+}
+
+async function metricCounterTasksInMonth(req, res) {
+    try {
+        const { year, month } = req.params;
+
+        if (!year || !month) {
+            return res.status(400).json({ error: 'Ano e mês são obrigatórios' });
+        }
+
+        if (isNaN(year) || isNaN(month) || year < 0 || month < 1 || month > 12) {
+            return res.status(400).json({ error: 'Ano e mês devem ser valores numéricos válidos' });
+        }
+
+        const startDate = new Date(year, month - 1, 1); // primeiro dia do mês
+        const endDate = new Date(year, month, 0); // ultimo dia do mês
+
+        const completedTasksCount = await Task.count({
+            where: {
+                taskStatus: 'COMPLETED',
+                updatedAt: {
+                    [Op.between]: [startDate, endDate],
+                },
+            },
+        });
+
+        const canceledTasksCount = await Task.count({
+            where: {
+                taskStatus: 'CANCELED',
+                updatedAt: {
+                    [Op.between]: [startDate, endDate],
+                },
+            },
+        });
+
+        const pausedTasksCount = await Task.count({
+            where: {
+                taskStatus: 'PAUSED',
+                updatedAt: {
+                    [Op.between]: [startDate, endDate],
+                },
+            },
+        });
+
+        const doingTasksCount = await Task.count({
+            where: {
+                taskStatus: ['TODO', 'INPROGRESS'],
+                updatedAt: {
+                    [Op.between]: [startDate, endDate],
+                },
+            },
+        });
+
+        const overdueTasksCount = await Task.count({
+            where: {
+                taskStatus: 'OVERDUE',
+                updatedAt: {
+                    [Op.between]: [startDate, endDate],
+                },
+            },
+        });
+
+        res.json({ completedTasksCount, canceledTasksCount, pausedTasksCount, doingTasksCount, overdueTasksCount });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao contar as tarefas completadas no mês especificado' });
+    }
+}
+
 module.exports = {
     createTask,
     getTaskById,
     getAllTasks,
     updateTask,
     deleteTask,
+    getNextDeadlineTasks,
+    metricCounterTasksInMonth
 };
