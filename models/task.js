@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       this.belongsTo(models.Expertise, {
-        foreignKey: 'taskDomain', 
+        foreignKey: 'taskDomain',
         as: 'expertise',
       });
     }
@@ -65,9 +65,14 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       taskStatus: {
-        type: DataTypes.ENUM('TODO', 'WAITING', 'INPROGRESS', 'PAUSED', 'CANCELED', 'COMPLETED', 'OVERDUE'),
+        type: DataTypes.ENUM('TO_ESTIMATE', 'WAITING', 'INPROGRESS', 'PAUSED', 'CANCELED', 'COMPLETED', 'OVERDUE'),
         allowNull: false,
-        defaultValue: 'TODO',
+        defaultValue: 'TO_ESTIMATE',
+      },
+      estimateValue: {
+        type: DataTypes.DECIMAL(12, 2),
+        allowNull: true,
+        defaultValue: 0.0,
       },
       isActive: {
         type: DataTypes.BOOLEAN,

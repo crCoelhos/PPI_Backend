@@ -68,10 +68,26 @@ async function deleteUserTask(req, res) {
     }
 }
 
+async function countUserTasks(userId) {
+    try {
+        const userTasksCount = await User_Task.count({
+            where: {
+                userId: userId,
+            },
+        });
+
+        return userTasksCount;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Erro ao contar as atribuições de usuário para tarefas');
+    }
+}
+
 module.exports = {
     assignTask,
     getUserTaskById,
     getAllUserTasks,
     updateUserTask,
     deleteUserTask,
+    countUserTasks
 };

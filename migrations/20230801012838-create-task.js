@@ -47,9 +47,14 @@ module.exports = {
         defaultValue: true,
       },
       taskStatus: {
-        type: Sequelize.ENUM('TODO', 'WAITING', 'INPROGRESS', 'PAUSED', 'CANCELED', 'COMPLETED', 'OVERDUE'),
+        type: Sequelize.ENUM('TO_ESTIMATE', 'WAITING', 'INPROGRESS', 'PAUSED', 'CANCELED', 'COMPLETED', 'OVERDUE'),
         allowNull: false,
-        defaultValue: 'TODO',
+        defaultValue: 'TO_ESTIMATE',
+      },
+      estimateValue:{
+        type: Sequelize.DECIMAL(12,2),
+        allowNull: true,
+        defaultValue: 0.0,
       },
       customerId: {
         type: Sequelize.INTEGER,

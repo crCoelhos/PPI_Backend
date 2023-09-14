@@ -25,7 +25,7 @@
                     defaultValue: true,
                 },
                 status: {
-                    type: DataTypes.ENUM('TODO', 'WAITING', 'INPROGRESS', 'PAUSED', 'CANCELED', 'COMPLETED', 'OVERDUE'),
+                    type: DataTypes.ENUM('TO_ESTIMATE', 'WAITING', 'INPROGRESS', 'PAUSED', 'CANCELED', 'COMPLETED', 'OVERDUE'),
                     allowNull: false
                 }
             },

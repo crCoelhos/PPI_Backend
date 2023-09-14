@@ -216,7 +216,7 @@ async function metricCounterTasksInMonth(req, res) {
 
         const doingTasksCount = await Task.count({
             where: {
-                taskStatus: ['TODO', 'INPROGRESS'],
+                taskStatus: ['TO_ESTIMATE', 'INPROGRESS'],
                 updatedAt: {
                     [Op.between]: [startDate, endDate],
                 },

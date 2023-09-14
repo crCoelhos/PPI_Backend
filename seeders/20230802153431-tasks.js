@@ -14,7 +14,7 @@ module.exports = {
         updatedDeadline: null,
         taskDomain: '5',
         isActive: true,
-        taskStatus: "TODO",
+        taskStatus: "TO_ESTIMATE",
         customerId: 1, // Assuming a customer with ID 2 exists
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -28,7 +28,7 @@ module.exports = {
         updatedDeadline: null,
         taskDomain: '2',
         isActive: true,
-        taskStatus: "TODO",
+        taskStatus: "TO_ESTIMATE",
         customerId: 2, // Assuming a customer with ID 3 exists
         createdAt: new Date(),
         updatedAt: new Date(),

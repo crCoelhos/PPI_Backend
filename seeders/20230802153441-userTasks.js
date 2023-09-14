@@ -17,7 +17,7 @@ module.exports = {
         taskId: 2, // Assuming a task with ID 2 exists
         assignmentDate: new Date('2023-08-10'),
         is_active: true,
-        status: 'TODO',
+        status: 'TO_ESTIMATE',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
