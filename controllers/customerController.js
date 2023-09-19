@@ -19,7 +19,7 @@ async function getCustomerById(req, res) {
         if (!customer) {
             return res.status(404).json({ error: 'cliente não encontrado' });
         }
-        res.json({ customer });
+        res.json(customer);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Erro ao obter o cliente' });

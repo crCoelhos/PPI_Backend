@@ -1,6 +1,8 @@
 'use strict';
 const { Task, User_Task } = require('../models');
-const { Op } = require('sequelize');
+const { Op, literal } = require('sequelize');
+const { startOfMonth, endOfMonth, subMonths } = require('date-fns');
+
 
 
 
@@ -22,6 +24,8 @@ async function updateOverdueTasks() {
         await task.update({ taskStatus: 'OVERDUE' });
     }
 }
+
+
 
 async function createTask(req, res) {
     try {
@@ -96,7 +100,13 @@ async function updateTask(req, res) {
         if (!task) {
             return res.status(404).json({ error: 'Tarefa não encontrada' });
         }
+
         const taskData = req.body;
+
+        if (taskData.taskStatus === 'COMPLETED' && task.taskStatus !== 'COMPLETED') {
+            taskData.completedAt = new Date();
+        }
+
         await Task.update(taskData, { where: { id: taskId } });
         const updatedTask = await Task.findByPk(taskId);
         res.json(updatedTask);
@@ -135,7 +145,7 @@ async function getNextDeadlineTasks(req, res) {
                 },
             },
             order: [
-                ['deadline', 'ASC'] // Ordena em ordem crescente de prazo final
+                ['deadline', 'ASC']
             ],
         });
 
@@ -152,14 +162,40 @@ async function getNextDeadlineTasks(req, res) {
 async function countCompletedTasksLastMonth(req, res) {
     try {
 
+
         const currentDate = new Date();
-        const oneMonthAgo = new Date();
-        oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+        const startDateOfLastMonth = startOfMonth(subMonths(currentDate, 1));
+        const endDateOfLastMonth = endOfMonth(subMonths(currentDate, 1));
+
 
         const completedTasksCount = await Task.count({
             where: {
                 taskStatus: 'COMPLETED',
-                updatedAt: {
+                completedAt: {
+                    [Op.between]: [startDateOfLastMonth, endDateOfLastMonth],
+                },
+            },
+        });
+
+        res.json({ completedTasksCount });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao contar as tarefas completadas no último mês' });
+    }
+}
+
+
+async function countCompletedTasksCurrentMonth(req, res) {
+    try {
+
+        const currentDate = new Date();
+        const oneMonthAgo = new Date();
+        oneMonthAgo.setMonth(currentDate.getMonth());
+
+        const completedTasksCount = await Task.count({
+            where: {
+                taskStatus: 'COMPLETED',
+                completedAt: {
                     [Op.between]: [oneMonthAgo, currentDate],
                 },
             },
@@ -232,10 +268,75 @@ async function metricCounterTasksInMonth(req, res) {
             },
         });
 
-        res.json({ completedTasksCount, canceledTasksCount, pausedTasksCount, doingTasksCount, overdueTasksCount });
+
+        res.json({ completedTasksCount, canceledTasksCount, pausedTasksCount, doingTasksCount, overdueTasksCount, });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Erro ao contar as tarefas completadas no mês especificado' });
+    }
+}
+
+async function calculateTotalEstimateValueOfCompletedTasks(req, res) {
+
+    // #TODO
+
+    try {
+        const currentDate = new Date();
+        const startDateOfThisMonth = startOfMonth(currentDate);
+        const endDateOfThisMonth = endOfMonth(currentDate);
+
+        const totalEstimateValue = await Task.sum('estimateValue', {
+            where: {
+                // taskStatus: 'COMPLETED',
+                completedAt: {
+                    [Op.between]: [startDateOfThisMonth, endDateOfThisMonth],
+                },
+            },
+        });
+
+        res.json({ totalEstimateValue });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao calcular o estimateValue das tarefas COMPLETED do mês atual' });
+    }
+
+}
+
+async function calculateTotalEstimateValueOfCompletedTasks(req, res) {
+    try {
+        const totalEstimateValue = await Task.sum('estimateValue', {
+            where: {
+                taskStatus: 'COMPLETED',
+            },
+        });
+
+        res.json({ totalEstimateValue });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao calcular o estimateValue das tarefas COMPLETED' });
+    }
+}
+
+
+async function calculateTotalEstimateValueOfLastMonthCompletedTasks(req, res) {
+    try {
+        const currentDate = new Date();
+        const startDateOfLastMonth = startOfMonth(subMonths(currentDate, 1));
+        const endDateOfLastMonth = endOfMonth(subMonths(currentDate, 1));
+
+        const totalEstimateValue = await Task.sum('estimateValue', {
+            where: {
+                taskStatus: 'COMPLETED',
+                completedAt: {
+                    [Op.between]: [startDateOfLastMonth, endDateOfLastMonth],
+                },
+            },
+        });
+
+        res.json({ totalEstimateValue });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao calcular o estimateValue das tarefas COMPLETED do mês anterior' });
     }
 }
 
@@ -246,5 +347,9 @@ module.exports = {
     updateTask,
     deleteTask,
     getNextDeadlineTasks,
-    metricCounterTasksInMonth
+    countCompletedTasksLastMonth,
+    metricCounterTasksInMonth,
+    countCompletedTasksCurrentMonth,
+    calculateTotalEstimateValueOfCompletedTasks,
+    calculateTotalEstimateValueOfLastMonthCompletedTasks
 };

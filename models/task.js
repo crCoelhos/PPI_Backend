@@ -69,6 +69,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 'TO_ESTIMATE',
       },
+      
+      completedAt: {
+        type: DataTypes.DATEONLY,
+        allowNull: true,
+      },
       estimateValue: {
         type: DataTypes.DECIMAL(12, 2),
         allowNull: true,

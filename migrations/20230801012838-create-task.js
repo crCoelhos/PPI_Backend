@@ -50,9 +50,13 @@ module.exports = {
         type: Sequelize.ENUM('TO_ESTIMATE', 'WAITING', 'INPROGRESS', 'PAUSED', 'CANCELED', 'COMPLETED', 'OVERDUE'),
         allowNull: false,
         defaultValue: 'TO_ESTIMATE',
+      }, 
+      completedAt: {
+        type: Sequelize.DATE,
+        allowNull: true,
       },
-      estimateValue:{
-        type: Sequelize.DECIMAL(12,2),
+      estimateValue: {
+        type: Sequelize.DECIMAL(12, 2),
         allowNull: true,
         defaultValue: 0.0,
       },
@@ -75,8 +79,6 @@ module.exports = {
         allowNull: false,
       },
     });
-
-    // Add any additional indexes or constraints here if needed.
 
   },
 
