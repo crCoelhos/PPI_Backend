@@ -226,7 +226,7 @@ async function metricCounterTasksInMonth(req, res) {
         const completedTasksCount = await Task.count({
             where: {
                 taskStatus: 'COMPLETED',
-                updatedAt: {
+                completedAt: {
                     [Op.between]: [startDate, endDate],
                 },
             },
@@ -276,9 +276,7 @@ async function metricCounterTasksInMonth(req, res) {
     }
 }
 
-async function calculateTotalEstimateValueOfCompletedTasks(req, res) {
-
-    // #TODO
+async function calculateTotalEstimateValueOfCompletedTasksThisMonth(req, res) {
 
     try {
         const currentDate = new Date();
@@ -287,7 +285,7 @@ async function calculateTotalEstimateValueOfCompletedTasks(req, res) {
 
         const totalEstimateValue = await Task.sum('estimateValue', {
             where: {
-                // taskStatus: 'COMPLETED',
+                taskStatus: 'COMPLETED',
                 completedAt: {
                     [Op.between]: [startDateOfThisMonth, endDateOfThisMonth],
                 },
@@ -299,8 +297,62 @@ async function calculateTotalEstimateValueOfCompletedTasks(req, res) {
         console.error(error);
         res.status(500).json({ error: 'Erro ao calcular o estimateValue das tarefas COMPLETED do mês atual' });
     }
-
 }
+
+async function calculateTotalEstimateValueOfCanceledTasksThisMonth(req, res) {
+
+    try {
+        const currentDate = new Date();
+        const startDateOfThisMonth = startOfMonth(currentDate);
+        const endDateOfThisMonth = endOfMonth(currentDate);
+
+        const totalEstimateValue = await Task.sum('estimateValue', {
+            where: {
+                taskStatus: 'CANCELED',
+                updatedAt: {
+                    [Op.between]: [startDateOfThisMonth, endDateOfThisMonth],
+                },
+            },
+        });
+
+        res.json({ totalEstimateValue });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao calcular o estimateValue das tarefas CANCELED do mês atual' });
+    }
+}
+
+async function calculateTotalEstimateValueOfCompletedTasksForMonth(req, res) {
+    try {
+        const { month } = req.params;
+
+        const monthNumber = parseInt(month, 10);
+        if (isNaN(monthNumber) || monthNumber < 1 || monthNumber > 12) {
+            return res.status(400).json({ error: 'Mês inválido. Use um número de 1 a 12.' });
+        }
+
+        const currentDate = new Date();
+        const startDateOfSpecifiedMonth = new Date(currentDate.getFullYear(), monthNumber - 1, 1);
+        const endDateOfSpecifiedMonth = new Date(currentDate.getFullYear(), monthNumber, 0);
+
+        const totalEstimateValue = await Task.sum('estimateValue', {
+            where: {
+                taskStatus: 'COMPLETED',
+                completedAt: {
+                    [Op.between]: [startDateOfSpecifiedMonth, endDateOfSpecifiedMonth],
+                },
+            },
+        });
+
+        res.json({ totalEstimateValue });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao calcular o estimateValue das tarefas COMPLETED para o mês especificado' });
+    }
+}
+
+
+
 
 async function calculateTotalEstimateValueOfCompletedTasks(req, res) {
     try {
@@ -340,6 +392,28 @@ async function calculateTotalEstimateValueOfLastMonthCompletedTasks(req, res) {
     }
 }
 
+async function calculateTotalEstimateValueOfCanceledTasksLastMonth(req, res) {
+    try {
+        const currentDate = new Date();
+        const startDateOfLastMonth = startOfMonth(subMonths(currentDate, 1));
+        const endDateOfLastMonth = endOfMonth(subMonths(currentDate, 1));
+
+        const totalEstimateValue = await Task.sum('estimateValue', {
+            where: {
+                taskStatus: 'CANCELED',
+                updatedAt: {
+                    [Op.between]: [startDateOfLastMonth, endDateOfLastMonth],
+                },
+            },
+        });
+
+        res.json({ totalEstimateValue });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erro ao calcular o estimateValue das tarefas CANCELED do mês anterior' });
+    }
+}
+
 module.exports = {
     createTask,
     getTaskById,
@@ -350,6 +424,10 @@ module.exports = {
     countCompletedTasksLastMonth,
     metricCounterTasksInMonth,
     countCompletedTasksCurrentMonth,
-    calculateTotalEstimateValueOfCompletedTasks,
-    calculateTotalEstimateValueOfLastMonthCompletedTasks
+    calculateTotalEstimateValueOfCompletedTasksThisMonth,
+    calculateTotalEstimateValueOfLastMonthCompletedTasks,
+    calculateTotalEstimateValueOfCompletedTasksForMonth,
+    calculateTotalEstimateValueOfCanceledTasksThisMonth,
+    calculateTotalEstimateValueOfCanceledTasksLastMonth,
+    
 };
