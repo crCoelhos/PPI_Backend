@@ -11,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
 
       this.hasMany(models.User_Task, {
         as: 'usertask',
-        foreignKey: 'taskId',
+        foreignKey: 'id',
       });
 
       this.belongsTo(models.Customer, {
         as: 'customer',
-        foreignKey: 'customerId',
+        foreignKey: 'id',
       });
 
       this.belongsTo(models.Expertise, {

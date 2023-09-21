@@ -16,7 +16,6 @@ async function login(req, res) {
     const user = await User.findOne({
       where: {
         [Op.or]: [
-          { email: login },
           { cpf: login }
         ]
       },
