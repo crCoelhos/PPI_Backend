@@ -11,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
 
       this.hasMany(models.User_Task, {
         as: 'usertask',
-        foreignKey: 'id',
+        foreignKey: 'taskId',
       });
 
       this.belongsTo(models.Customer, {
         as: 'customer',
-        foreignKey: 'id',
+        foreignKey: 'customerId',
       });
 
       this.belongsTo(models.Expertise, {
@@ -69,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 'TO_ESTIMATE',
       },
-      
+
       completedAt: {
         type: DataTypes.DATEONLY,
         allowNull: true,

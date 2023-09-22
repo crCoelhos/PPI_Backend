@@ -12,19 +12,7 @@ router.delete('/task/:id', authMiddleware, deleteTask);
 router.get('/tasks/deadline', authMiddleware, getNextDeadlineTasks);
 
 router.get('/tasks/metric/:year/:month', authMiddleware, metricCounterTasksInMonth);
-router.get('/tasks/metric/last', authMiddleware, countCompletedTasksLastMonth);
-router.get('/tasks/metric/current', authMiddleware, countCompletedTasksCurrentMonth);
 
-router.get('/tasks/balance/completed/current', authMiddleware, calculateTotalEstimateValueOfCompletedTasksThisMonth);
-
-router.get('/tasks/balance/completed/last', authMiddleware, calculateTotalEstimateValueOfLastMonthCompletedTasks);
-
-router.get('/tasks/balance/completed/:month', authMiddleware, calculateTotalEstimateValueOfCompletedTasksForMonth);
-
-
-router.get('/tasks/balance/canceled/current', authMiddleware, calculateTotalEstimateValueOfCanceledTasksThisMonth);
-
-router.get('/tasks/balance/canceled/last', authMiddleware, calculateTotalEstimateValueOfCanceledTasksLastMonth);
 
 
 // router.get('/tasks/balance/canceled/current', authMiddleware, calculateTotalEstimateValueOfCompletedTasks);

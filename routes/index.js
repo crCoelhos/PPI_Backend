@@ -8,6 +8,7 @@ const userRoute = require('./userRoutes');
 const roleRoute = require('./roleRoutes');
 const userTaskRoutes = require('./userTaskRoutes.js')
 const taskRoutes = require('./taskRoutes.js')
+const metricRoutes = require('./metricRoutes.js')
 const customerRoutes = require('./customerRoutes.js')
 const expertiseRoutes = require('./expertiseRoutes.js')
 
@@ -18,6 +19,7 @@ router.use('/admin', userTaskRoutes, accessMiddleware);
 router.use('/admin', taskRoutes, accessMiddleware);
 router.use('/admin', customerRoutes, accessMiddleware);
 router.use('/admin', expertiseRoutes, accessMiddleware);
+router.use('/admin', metricRoutes, accessMiddleware);
 // router.post('/webhook', Webhook);
 
 module.exports = router;
