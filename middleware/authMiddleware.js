@@ -13,6 +13,8 @@ async function authMiddleware(req, res, next) {
   try {
     //decodifica o token do usuario que fez a requisição
     const decoded = jwt.verify(authHeader, config.secret);
+    
+    console.log('Decoded User ID:', decoded.id);
 
     //procura o usuario na base
     const user = await User.findByPk(decoded.id, {
@@ -39,7 +41,7 @@ async function authMiddleware(req, res, next) {
 
     req.token = decoded;
     next();
-  }  catch (error) {
+  } catch (error) {
     console.error(error);
 
     if (error.name === 'TokenExpiredError') {

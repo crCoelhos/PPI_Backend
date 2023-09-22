@@ -29,13 +29,14 @@ async function login(req, res) {
       return res.status(400).json({ error: 'Usuário ou senha inválida' });
     }
 
-    // Extrair o nome e o Role do usuário
     const { name } = user;
     const { email } = user;
+    const { id } = user;
 
-    // Crie e retorne um token de acesso
     const token = jwt.sign({ id: user.id }, config.secret, { expiresIn: '6h' });
-    res.json({ name, token, email });
+    res.json({ id, name, token, email });
+
+    
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Erro ao fazer login' });

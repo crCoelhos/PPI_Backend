@@ -117,6 +117,36 @@ async function getUserById(req, res) {
   }
 }
 
+async function getUserData(req, res) {
+  try {
+    const userId = req.user.id; // Obtém o ID do usuário autenticado
+
+    const user = await User.findByPk(userId, {
+      include: [
+        {
+          model: Role,
+          as: 'role',
+          attributes: ['name']
+        }
+      ],
+      attributes: {
+        exclude: ['roleId', 'password'],
+      }
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Usuário não encontrado' });
+    }
+
+    res.status(200).json(user);
+  } catch (err) {
+    errorLogger(`Erro durante a busca do usuário: ${err.message}`);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
+}
+
+
+
 async function updateUserById(req, res) {
   try {
     const id = req.params.id;
@@ -174,6 +204,7 @@ module.exports = {
   createUser,
   getAllUsers,
   getUserById,
+  getUserData,
   updateUserById,
   deleteUserById,
 };
