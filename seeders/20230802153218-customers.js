@@ -6,7 +6,7 @@ module.exports = {
       {
         businessName: 'Empresa A',
         cnpj: '12345678901234',
-        contactName: 'João Silva',
+        contactName: 'Representante A',
         contactCpf: '98765432198',
         isActive: true,
         size: 'pequena empresa',
@@ -16,10 +16,10 @@ module.exports = {
       {
         businessName: 'Empresa B',
         cnpj: '56789012345678',
-        contactName: 'Maria Santos',
+        contactName: 'Representante B',
         contactCpf: '12345678901',
         isActive: true,
-        size: 'média empresa',
+        size: 'pequena empresa',
         createdAt: new Date(),
         updatedAt: new Date(),
       },

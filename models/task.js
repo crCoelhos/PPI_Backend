@@ -15,8 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       this.belongsTo(models.Customer, {
-        as: 'customer',
         foreignKey: 'customerId',
+        targetKey: 'id',
+        as: 'customer',
       });
 
       this.belongsTo(models.Expertise, {
