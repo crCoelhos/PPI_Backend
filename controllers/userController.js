@@ -4,6 +4,11 @@ const Role = db.Role;
 const User = db.User;
 const Expertise = db.Expertise;
 
+// TODO password recover logic and validation
+// passrec route 
+
+
+
 function createLogger(level) {
   return message => {
     const timestamp = new Date().toISOString();
