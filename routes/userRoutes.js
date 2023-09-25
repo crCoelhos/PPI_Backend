@@ -10,4 +10,8 @@ router.get('/user/:id', authMiddleware, userController.getUserById);
 router.put('/user/:id', authMiddleware, userController.updateUserById);
 router.delete('/user/:id', authMiddleware, userController.deleteUserById);
 
+
+router.post('/user/request-password', userController.requestPasswordReset);
+router.post('/user/confirm-new-password', userController.confirmPasswordReset);
+
 module.exports = router;

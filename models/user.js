@@ -74,6 +74,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM('M', 'H', 'O'),
         allowNull: false
       },
+      resetToken: {
+        type: DataTypes.STRING, 
+        allowNull: true,
+      },
       expertiseId: {
         type: DataTypes.INTEGER,
         allowNull: true,

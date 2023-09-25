@@ -1,17 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware.js')
-const { createTask, updateTask, deleteTask, getTaskById, getAllTasks, getNextDeadlineTasks, metricCounterTasksInMonth, countCompletedTasksLastMonth, countCompletedTasksCurrentMonth, calculateTotalEstimateValueOfCompletedTasksThisMonth, calculateTotalEstimateValueOfLastMonthCompletedTasks, calculateTotalEstimateValueOfCompletedTasksForMonth, calculateTotalEstimateValueOfCanceledTasksThisMonth, calculateTotalEstimateValueOfCanceledTasksLastMonth } = require('../controllers/taskController.js');
+const taskController = require('../controllers/taskController.js');
 
-router.post('/task', authMiddleware, createTask);
-router.get('/task/:id', getTaskById);
-router.get('/tasks/', getAllTasks);
-router.put('/task/:id', authMiddleware, updateTask);
-router.delete('/task/:id', authMiddleware, deleteTask);
 
-router.get('/tasks/deadline', authMiddleware, getNextDeadlineTasks);
+router.post('/task', authMiddleware, taskController.createTask);
+router.get('/task/:id', taskController.getTaskById);
+router.get('/tasks/', taskController.getAllTasks);
+router.put('/task/:id', authMiddleware, taskController.updateTask);
+router.delete('/task/:id', authMiddleware, taskController.deleteTask);
 
-router.get('/tasks/metric/:year/:month', authMiddleware, metricCounterTasksInMonth);
+router.get('/tasks/deadline', authMiddleware, taskController.getNextDeadlineTasks);
+
+router.get('/tasks/metric/:year/:month', authMiddleware, taskController.metricCounterTasksInMonth);
 
 
 
@@ -23,4 +24,3 @@ module.exports = router;
 
 // TODO: separar as rotas de task e metrics pra facilitar a gerencia
 // TODO criar uma função parametrica que pegue determinadas duas datas e verifique as metrias dentro desse range
- 

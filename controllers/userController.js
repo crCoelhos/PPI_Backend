@@ -2,11 +2,17 @@ const bcrypt = require('bcrypt');
 const db = require('../models');
 const Role = db.Role;
 const User = db.User;
+const crypto = require('crypto');
 const Expertise = db.Expertise;
 
 // TODO password recover logic and validation
 // passrec route 
 
+
+function generateResetToken() {
+  const token = crypto.randomBytes(32).toString('hex');
+  return token;
+}
 
 
 function createLogger(level) {
@@ -205,6 +211,56 @@ async function deleteUserById(req, res) {
   }
 }
 
+
+
+async function requestPasswordReset(req, res) {
+  try {
+    const { cpf, email, birthdate } = req.body;
+
+    const user = await User.findOne({ where: { cpf, email } });
+
+    if (!user || user.birthdate !== birthdate) {
+      return res.status(401).json({ message: 'CPF, e-mail ou data de nascimento incorretos' });
+    }
+
+    const resetToken = generateResetToken();
+
+    user.resetToken = resetToken;
+    await user.save();
+
+    res.status(200).json({ resetToken });
+    console.log(resetToken)
+  } catch (err) {
+    console.error(`Erro durante o processo de solicitação de recuperação de senha: ${err.message}`);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
+}
+
+
+async function confirmPasswordReset(req, res) {
+  try {
+    const { token, newPassword } = req.body;
+
+    const user = await User.findOne({ where: { resetToken: token } });
+
+    if (!user) {
+      return res.status(401).json({ message: 'Token de recuperação de senha inválido' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    user.password = hashedPassword;
+    user.resetToken = null;
+    await user.save();
+
+    res.status(200).json({ message: 'Senha redefinida com sucesso' });
+  } catch (err) {
+    console.error(`Erro durante a redefinição de senha: ${err.message}`);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
+}
+
+
 module.exports = {
   createUser,
   getAllUsers,
@@ -212,4 +268,6 @@ module.exports = {
   getUserData,
   updateUserById,
   deleteUserById,
+  requestPasswordReset,
+  confirmPasswordReset
 };

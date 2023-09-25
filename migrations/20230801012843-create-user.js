@@ -60,6 +60,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      resetToken: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       sex: {
         type: Sequelize.ENUM('M', 'H', 'O'),
         allowNull: false,

@@ -148,7 +148,7 @@
                     "value": "application/json"
                 },
                 {
-                    "name": "Authorization",
+                    "name": "USER",
                     "value": "{{token}}"
                 },
                 {
