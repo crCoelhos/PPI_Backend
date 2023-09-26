@@ -5,8 +5,7 @@ const User = db.User;
 const crypto = require('crypto');
 const Expertise = db.Expertise;
 
-// TODO password recover logic and validation
-// passrec route 
+
 
 
 function generateResetToken() {
