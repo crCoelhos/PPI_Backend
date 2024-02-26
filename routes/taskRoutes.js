@@ -16,10 +16,6 @@ router.get('/tasks/metric/:year/:month', authMiddleware, taskController.metricCo
 
 
 
-// router.get('/tasks/balance/canceled/current', authMiddleware, calculateTotalEstimateValueOfCompletedTasks);
-// router.get('/tasks/balance/canceled/last', authMiddleware, calculateTotalEstimateValueOfLastMonthCompletedTasks);
-
-
 module.exports = router;
 
 // TODO: separar as rotas de task e metrics pra facilitar a gerencia
